@@ -1,6 +1,6 @@
 <template>
-  <div class="vnc-container" id="screen">
-
+  <div class="vnc-container">
+    
   </div>
 </template>
 
@@ -19,8 +19,8 @@ export default {
     }
   },
   mounted() {
-    // document.getElementById('sendCtrlAltDelButton').onclick =
-    //   this.sendCtrlAltDel
+    document.getElementById('sendCtrlAltDelButton').onclick =
+      this.sendCtrlAltDel
 
     this.connectVnc()
   },
@@ -31,31 +31,6 @@ export default {
   },
 
   methods: {
-    //解析url信息
-    extractUrlInfo(urlString) {
-      try {
-        // 创建URL对象
-        const url = new URL(urlString);
-
-        // 提取主机名和端口
-        const host = url.hostname;
-        const port = url.port ? parseInt(url.port, 10) : null; // 如果URL中没有显式指定端口，port将为空字符串，因此我们需要检查并转换
-
-        // 提取特定查询参数
-        const queryParams = new URLSearchParams(url.search);
-        const token = queryParams.get('token');
-
-        // 返回结果对象
-        return {
-          host,
-          port,
-          token
-        };
-      } catch (error) {
-        console.error('Invalid URL:', error);
-        return null;
-      }
-    },
     sendCtrlAltDel() {
       this.rfb.sendCtrlAltDel()
       return false
@@ -63,8 +38,8 @@ export default {
 
     //连接
     connectVnc() {
-      const PASSWORD = '123456'//VNC Server 密码
-      const url = 'ws://192.168.2.99:6080/websockify?token=666'
+      const PASSWORD = ''//VNC Server 密码
+      const url = 'ws://192.168.8.15:6080/websockify'
       this.rfb = new RFB(document.getElementById('screen'), url, {
         // 向vnc 传递的一些参数，比如说虚拟机的开机密码等
         credentials: { password: PASSWORD },
@@ -81,19 +56,19 @@ export default {
     },
 
     connectedToServer(e) {
-      // this.status('Connected to ' + this.desktopName)
+      this.status('Connected to ' + this.desktopName)
       console.log('success', e)
     },
 
     disconnectedFromServer(e) {
       if (e.detail.clean) {
-        // this.status('Disconnected')
+        this.status('Disconnected')
 
         console.log('clean', e.detail.clean)
         //根据 断开信息的msg.detail.clean 来判断是否可以重新连接
         // this.connectVnc()
       } else {
-        // this.status('Something went wrong, connection is closed')
+        this.status('Something went wrong, connection is closed')
         console.log('链接失败,重新链接中-------' + this.wsURL)
         // this.connectVnc()
       }
@@ -104,7 +79,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.vnc-container {
+.vnc-container{
   width: 100vw;
   height: 100vh;
 }

@@ -64,7 +64,7 @@ export default {
     //连接
     connectVnc() {
       const PASSWORD = '123456'//VNC Server 密码
-      const url = 'ws://192.168.2.99:6080/websockify?token=666'
+      const url = 'ws://192.168.2.99:6080/websockify'
       this.rfb = new RFB(document.getElementById('screen'), url, {
         // 向vnc 传递的一些参数，比如说虚拟机的开机密码等
         credentials: { password: PASSWORD },
